@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K.B Global Research Consult - Agriculture & Plant Sciences Experts</title>
     <style>
-
         :root {
             --primary: #2e7d32;
             --secondary: #1b5e20;
@@ -42,14 +41,34 @@
             margin-bottom: 1rem;
         }
         
+        /* Navigation Styles */
         nav {
             background-color: var(--secondary);
             padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
         }
         
         nav ul {
             display: flex;
-            justify-content: center;
             list-style: none;
             padding: 0;
             margin: 0;
@@ -63,6 +82,11 @@
             color: white;
             text-decoration: none;
             font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
         }
         
         .hero {
@@ -156,6 +180,42 @@
         .btn:hover {
             background-color: #7cb342;
         }
+        
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: var(--secondary);
+                z-index: 1000;
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+            
+            nav li {
+                margin: 0;
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            nav a {
+                display: block;
+                padding: 1rem;
+            }
+            
+            .service-grid, .benefits {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -165,12 +225,15 @@
     </header>
     
     <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+        <div class="nav-container">
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <ul id="mainMenu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
     </nav>
     
     <section class="hero" id="home">
@@ -286,5 +349,42 @@
             <p>&copy; <span id="year">2025</span> K.B Global Research Consult. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const mainMenu = document.getElementById('mainMenu');
+            
+            menuToggle.addEventListener('click', function() {
+                mainMenu.classList.toggle('active');
+                
+                // Change icon based on menu state
+                if (mainMenu.classList.contains('active')) {
+                    menuToggle.textContent = '✕';
+                } else {
+                    menuToggle.textContent = '☰';
+                }
+            });
+            
+            // Close menu when a link is clicked (for single-page navigation)
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        mainMenu.classList.remove('active');
+                        menuToggle.textContent = '☰';
+                    }
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('nav') && window.innerWidth <= 768) {
+                    mainMenu.classList.remove('active');
+                    menuToggle.textContent = '☰';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
